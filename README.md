@@ -1,8 +1,6 @@
 # MyUploader-Backend
 > 单文件上传，多文件上传，大文件上传，断点续传，文件秒传，图片上传
 >
-> this's test
->
 > 前端项目地址： [https://github.com/gaoyuyue/MyUploader](https://github.com/gaoyuyue/MyUploader)
 
 # 简介
