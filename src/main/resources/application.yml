@@ -1,0 +1,22 @@
+sys:
+  version: "0.2"
+server:
+  port: 3344
+spring:
+  datasource:
+#    username: user
+#    password: hbkhEwY4LPipeE5j
+#    url: jdbc:mysql://ly-cx.top/all_data?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
+    username: root
+    password: root
+    url: jdbc:mysql://localhost/file_upload?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10000Mb
+      max-request-size: 100000Mb
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: cn.attackme.myuploader.model
+upload:
+  path: ./upload/
