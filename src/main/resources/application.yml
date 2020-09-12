@@ -20,3 +20,4 @@ mybatis:
   type-aliases-package: cn.attackme.myuploader.model
 upload:
   path: ./upload/
+#  啊大苏打撒啊
