@@ -1,8 +1,9 @@
 package cn.attackme.myuploader.controller;
-import cn.attackme.myuploader.service.FileService;
+import cn.attackme.myuploader.service.SubmissionSituationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,13 +18,12 @@ import java.io.IOException;
 @CrossOrigin
 public class UploadController {
     @Autowired
-    private FileService fileService;
+    private SubmissionSituationService submissionSituationService;
 
     @RequestMapping(value = "/SingleFile", method = RequestMethod.POST)
     @ApiOperation(value = "上传单个文件至服务器")
-    public void singleUpload(String md5,
-                       MultipartFile file) throws IOException {
-        fileService.upload(md5, file);
+    public void singleUpload(Integer fileId, Integer classId, MultipartFile file) throws IOException {
+        submissionSituationService.upload(fileId, classId, file);
     }
 
     @RequestMapping(value = "/BigFile", method = RequestMethod.POST)
@@ -32,24 +32,26 @@ public class UploadController {
                        Long size,
                        Integer chunks,
                        Integer chunk,
+                       Integer fileId,
+                       Integer classId,
                        MultipartFile file) throws IOException {
         if (chunks != null && chunks != 0) {
-            fileService.uploadWithBlock(md5,size,chunks,chunk,file);
+            submissionSituationService.uploadWithBlock(md5, size, chunks, chunk, fileId, classId, file);
         } else {
-            fileService.upload(md5,file);
+            submissionSituationService.upload(fileId, classId, file);
         }
     }
 
-    @RequestMapping(value = "/QuickUpload" , method = RequestMethod.POST)
-    @ApiOperation(value = "通过文件的md5快速上传文件")
-    public boolean quickUpload(String md5) {
-        return fileService.checkMd5(md5);
-    }
+//    @RequestMapping(value = "/QuickUpload" , method = RequestMethod.POST)
+//    @ApiOperation(value = "通过md5判断文件是否已经上传")
+//    public boolean quickUpload(String md5) {
+//        return submissionSituationService.checkMd5(md5);
+//    }
 
     @ApiOperation(value = "获取最大id值")
     @RequestMapping(value = "/getMaxId", method = RequestMethod.GET)
     public Integer getMaxId(){
-        return fileService.getMaxId();
+        return submissionSituationService.getMaxId();
     }
 }
 
