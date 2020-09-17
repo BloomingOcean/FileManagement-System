@@ -4,12 +4,14 @@ import cn.attackme.myuploader.config.UploadConfig;
 import cn.attackme.myuploader.dao.SubmissionSituationDao;
 import cn.attackme.myuploader.model.SubmissionSituation;
 import cn.attackme.myuploader.utils.FileUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import static cn.attackme.myuploader.utils.UploadUtils.*;
 
@@ -24,13 +26,15 @@ public class SubmissionSituationService {
     /**
      * 上传文件
      */
-    public void upload(Integer fileId, Integer classId, MultipartFile file) throws IOException {
+    public void upload(Integer fileId, String grade, String major, String sequence, MultipartFile file) throws IOException {
         // 获取文件名称,并把文件流写入path
         String name = file.getOriginalFilename();
         String filePath = UploadConfig.path + name;
         FileUtils.write(filePath, file.getInputStream());
         //获取可插入的最大id
         Integer newId = getMaxId() + 1;
+        //获取班级id
+        Integer classId = submissionSituationDao.getClassId(grade, major, sequence);
         submissionSituationDao.save(
                 new SubmissionSituation(newId, fileId, classId, filePath, new Date()));
     }
@@ -73,5 +77,50 @@ public class SubmissionSituationService {
      */
     public Integer getMaxId(){
         return submissionSituationDao.getMaxId();
+    }
+
+    /**
+     * 通过年级、专业、班级联查出班级id
+     * @param grade 年级
+     * @param major 专业
+     * @param sequence 班级
+     * @return 班级id
+     */
+    public Integer getClassId(String grade, String major, String sequence){
+        return submissionSituationDao.getClassId(grade, major, sequence);
+    }
+
+    /**
+     * 获取grade年级的所有专业
+     * @param grade 年级
+     * @return 所有专业
+     */
+    public List<String> getMajor(String grade){
+        return submissionSituationDao.getMajor(grade);
+    }
+
+    /**
+     * 获取grade年级、major专业的所有班级
+     * @param grade 年级
+     * @param major 专业
+     * @return 所有班级
+     */
+    public List<String> getAllClass(String grade, String major){
+        return submissionSituationDao.getAllClass(grade,major);
+    }
+
+    /**
+     * 判断是否上传了文件
+     * @param fileId 期数id
+     * @param classId 班级id
+     * @return 是否已经上传文件
+     */
+    public Integer judgeUpload(String fileId, String classId){
+        Integer subId = submissionSituationDao.judgeUpload(fileId, classId);
+        if(subId instanceof Integer){
+            return submissionSituationDao.judgeUpload(fileId, classId);
+        }else {
+            return 0;
+        }
     }
 }
