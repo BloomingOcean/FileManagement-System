@@ -12,7 +12,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        sub_id,file_id,class_id,situation,file_path,upload_time
+        sub_id,file_id,class_id,file_path,upload_time
     </sql>
 
     <select id="getById" parameterType="int" resultMap="SubmissionMap">
@@ -24,8 +24,8 @@
 
     <insert id="save" parameterType="cn.attackme.myuploader.model.SubmissionSituation" keyProperty="id" useGeneratedKeys="true">
         insert into submission_situation
-            (sub_id,file_id,class_id,situation,file_path,upload_time)
-                values(#{subId},#{fileId},#{classId},#{situation},#{filePath},#{uploadTime})
+            (sub_id,file_id,class_id,file_path,upload_time)
+                values(#{subId},#{fileId},#{classId},#{filePath},#{uploadTime})
     </insert>
 
     <update id="update" parameterType="cn.attackme.myuploader.model.SubmissionSituation" >
@@ -40,9 +40,6 @@
                 </if>
                 <if test="path != null">
                     path = #{path}
-                </if>
-                <if test="situation != null">
-                    situation = #{situation}
                 </if>
                 <if test="filePath != null">
                     file_path = #{filePath}
@@ -75,9 +72,6 @@
             </if>
             <if test="path != null">
                 and path = #{path}
-            </if>
-            <if test="situation != null">
-                and situation = #{situation}
             </if>
             <if test="filePath != null">
                 and file_path = #{filePath}

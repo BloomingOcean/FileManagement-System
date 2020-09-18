@@ -26,15 +26,36 @@ public class SubmissionSituationService {
     /**
      * 上传文件
      */
-    public void upload(Integer fileId, String grade, String major, String sequence, MultipartFile file) throws IOException {
-        // 获取文件名称,并把文件流写入path
-        String name = file.getOriginalFilename();
+    public void upload(String periodName, String grade, String major, String sequence, MultipartFile file) throws IOException {
+        //对文文件的全名进行截取然后在后缀名进行删选。
+        int begin = file.getOriginalFilename().indexOf(".");
+        int last = file.getOriginalFilename().length();
+        //获得文件后缀名
+        String suffix = file.getOriginalFilename().substring(begin, last);
+        System.out.println("后缀名：" + suffix);
+        //获得专业名简称
+        String shorthand = submissionSituationDao.getMajorShorthand(major);
+        //合成文件名
+        String name = periodName +"-"+ grade + "-" + shorthand + "-" + sequence + suffix;
+        System.out.println("文件名：" + name);
+        //文件存放地址
         String filePath = UploadConfig.path + name;
         FileUtils.write(filePath, file.getInputStream());
-        //获取可插入的最大id
-        Integer newId = getMaxId() + 1;
         //获取班级id
         Integer classId = submissionSituationDao.getClassId(grade, major, sequence);
+        //获得期次
+        Integer fileId = submissionSituationDao.getPeriodId(periodName);
+        //判断数据库是否已经有此班级的数据
+        Integer subId = submissionSituationDao.judgeUpload(fileId, classId);
+        //如果在数据库中已经有此班级的数据，则把此班级的数据删除
+        if(subId == null){
+            subId = 0;
+        }
+        if(subId != 0){
+            submissionSituationDao.deleteRepeatFile(subId);
+        }
+        //获取可插入的最大id
+        Integer newId = getMaxId() + 1;
         submissionSituationDao.save(
                 new SubmissionSituation(newId, fileId, classId, filePath, new Date()));
     }
@@ -80,6 +101,14 @@ public class SubmissionSituationService {
     }
 
     /**
+     * 获取所有期数
+     * @return 所有期数
+     */
+    public List<String> getPeriod(){
+        return submissionSituationDao.getPeriod();
+    }
+
+    /**
      * 通过年级、专业、班级联查出班级id
      * @param grade 年级
      * @param major 专业
@@ -115,7 +144,7 @@ public class SubmissionSituationService {
      * @param classId 班级id
      * @return 是否已经上传文件
      */
-    public Integer judgeUpload(String fileId, String classId){
+    public Integer judgeUpload(Integer fileId, Integer classId){
         Integer subId = submissionSituationDao.judgeUpload(fileId, classId);
         if(subId instanceof Integer){
             return submissionSituationDao.judgeUpload(fileId, classId);
@@ -123,4 +152,6 @@ public class SubmissionSituationService {
             return 0;
         }
     }
+
+
 }

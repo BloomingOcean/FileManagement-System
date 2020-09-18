@@ -23,12 +23,12 @@ public class UploadController {
 
     @RequestMapping(value = "/SingleFile", method = RequestMethod.POST)
     @ApiOperation(value = "上传单个文件至服务器")
-    public void singleUpload(Integer fileId,
+    public void singleUpload(String periodName,
                              String grade,
                              String major,
                              String sequence,
                              MultipartFile file) throws IOException {
-        submissionSituationService.upload(fileId, grade, major, sequence, file);
+        submissionSituationService.upload(periodName, grade, major, sequence, file);
     }
 
 //    @RequestMapping(value = "/BigFile", method = RequestMethod.POST)
@@ -79,8 +79,14 @@ public class UploadController {
 
     @ApiOperation(value = "判断此班级是否上传了文件")
     @RequestMapping(value = "/judgeUpload", method = RequestMethod.GET)
-    public Integer judgeUpload(String fileId, String classId){
+    public Integer judgeUpload(Integer fileId, Integer classId){
         return submissionSituationService.judgeUpload(fileId, classId);
+    }
+
+    @ApiOperation(value = "获取所有期数")
+    @RequestMapping(value = "/getPeriod", method = RequestMethod.GET)
+    public List<String> getPeriod(){
+        return submissionSituationService.getPeriod();
     }
 }
 

@@ -16,14 +16,10 @@ public class FileUtils {
      * @throws IOException
      */
     public static void write(String target, InputStream src) throws IOException {
-        System.out.println("创建输出流");
-//        System.out.println(new File(target).getAbsolutePath());
         File file = new File(target);
         OutputStream os = new FileOutputStream(file);
-        System.out.println("创建bute");
         byte[] buf = new byte[1024];
         int len;
-        System.out.println("复写数据");
         while (-1 != (len = src.read(buf))) {
             os.write(buf,0,len);
         }
