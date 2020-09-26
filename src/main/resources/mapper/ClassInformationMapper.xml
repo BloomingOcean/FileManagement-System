@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.attackme.myuploader.dao.ClassInformationDao">
+    <resultMap id="ClassMap" type="cn.attackme.myuploader.model.ClassInformation">
+        <result column="class_id" property="classId" />
+        <result column="major_name" property="majorName" />
+        <result column="class_sequence" property="classSequence" />
+    </resultMap>
+
+    <select id="checkUnloadSituation" parameterType="int" resultMap="ClassMap">
+        SELECT c.class_id,m.major_name,c.class_sequence
+        FROM class c,major m
+        WHERE c.class_major_id = m.major_id
+        AND c.class_id NOT IN
+        (SELECT s.class_id
+        FROM submission_situation s
+        WHERE s.file_id = #{file_id})
+    </select>
+</mapper>

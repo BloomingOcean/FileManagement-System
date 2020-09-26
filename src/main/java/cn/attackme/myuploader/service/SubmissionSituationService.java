@@ -2,6 +2,7 @@ package cn.attackme.myuploader.service;
 
 import cn.attackme.myuploader.config.UploadConfig;
 import cn.attackme.myuploader.dao.SubmissionSituationDao;
+import cn.attackme.myuploader.model.ClassInformation;
 import cn.attackme.myuploader.model.SubmissionSituation;
 import cn.attackme.myuploader.utils.FileUtils;
 import org.apache.ibatis.annotations.Param;
@@ -32,12 +33,10 @@ public class SubmissionSituationService {
         int last = file.getOriginalFilename().length();
         //获得文件后缀名
         String suffix = file.getOriginalFilename().substring(begin, last);
-        System.out.println("后缀名：" + suffix);
         //获得专业名简称
         String shorthand = submissionSituationDao.getMajorShorthand(major);
         //合成文件名
         String name = periodName +"-"+ grade + "-" + shorthand + "-" + sequence + suffix;
-        System.out.println("文件名：" + name);
         //文件存放地址
         String filePath = UploadConfig.path + name;
         FileUtils.write(filePath, file.getInputStream());
@@ -54,7 +53,7 @@ public class SubmissionSituationService {
         if(subId != 0){
             submissionSituationDao.deleteRepeatFile(subId);
         }
-        //获取可插入的最大id
+        //获取可插入的最大id(未考虑空的情况)
         Integer newId = getMaxId() + 1;
         submissionSituationDao.save(
                 new SubmissionSituation(newId, fileId, classId, filePath, new Date()));
@@ -96,15 +95,19 @@ public class SubmissionSituationService {
      * 获取数据表中最大的id
      * @return 最大id
      */
-    public Integer getMaxId(){
-        return submissionSituationDao.getMaxId();
+    public Integer getMaxId() {
+        Integer maxId = submissionSituationDao.getMaxId();
+        if(maxId == null){
+            return 0;
+        }
+        return maxId;
     }
 
     /**
      * 获取所有期数
      * @return 所有期数
      */
-    public List<String> getPeriod(){
+    public List<String> getPeriod() {
         return submissionSituationDao.getPeriod();
     }
 
@@ -115,7 +118,7 @@ public class SubmissionSituationService {
      * @param sequence 班级
      * @return 班级id
      */
-    public Integer getClassId(String grade, String major, String sequence){
+    public Integer getClassId(String grade, String major, String sequence) {
         return submissionSituationDao.getClassId(grade, major, sequence);
     }
 
@@ -124,7 +127,7 @@ public class SubmissionSituationService {
      * @param grade 年级
      * @return 所有专业
      */
-    public List<String> getMajor(String grade){
+    public List<String> getMajor(String grade) {
         return submissionSituationDao.getMajor(grade);
     }
 
@@ -134,7 +137,7 @@ public class SubmissionSituationService {
      * @param major 专业
      * @return 所有班级
      */
-    public List<String> getAllClass(String grade, String major){
+    public List<String> getAllClass(String grade, String major) {
         return submissionSituationDao.getAllClass(grade,major);
     }
 
@@ -144,7 +147,7 @@ public class SubmissionSituationService {
      * @param classId 班级id
      * @return 是否已经上传文件
      */
-    public Integer judgeUpload(Integer fileId, Integer classId){
+    public Integer judgeUpload(Integer fileId, Integer classId) {
         Integer subId = submissionSituationDao.judgeUpload(fileId, classId);
         if(subId instanceof Integer){
             return submissionSituationDao.judgeUpload(fileId, classId);

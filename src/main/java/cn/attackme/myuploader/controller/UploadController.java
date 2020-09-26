@@ -1,9 +1,9 @@
 package cn.attackme.myuploader.controller;
+import cn.attackme.myuploader.model.ClassInformation;
 import cn.attackme.myuploader.service.SubmissionSituationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Api(tags = "文件上传api")
 @RestController
-@RequestMapping("/")
+@RequestMapping("/upload")
 @CrossOrigin
 public class UploadController {
     @Autowired
@@ -88,6 +88,7 @@ public class UploadController {
     public List<String> getPeriod(){
         return submissionSituationService.getPeriod();
     }
+
 }
 
 

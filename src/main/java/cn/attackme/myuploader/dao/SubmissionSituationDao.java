@@ -1,5 +1,6 @@
 package cn.attackme.myuploader.dao;
 
+import cn.attackme.myuploader.model.ClassInformation;
 import cn.attackme.myuploader.model.SubmissionSituation;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -122,6 +123,10 @@ public interface SubmissionSituationDao {
     Integer judgeUpload(@Param("file_id") Integer fileId,
                         @Param("class_id") Integer classId);
 
+    /**
+     * 删除重复的数据（业务：覆盖此班级已有的数据，用新数据替代）
+     * @param subId sub表id
+     */
     @Delete("DELETE FROM submission_situation " +
             "WHERE sub_id = #{sub_id}; ")
     void deleteRepeatFile(@Param("sub_id") Integer subId);
