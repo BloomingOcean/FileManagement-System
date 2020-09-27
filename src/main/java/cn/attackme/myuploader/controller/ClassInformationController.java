@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api
+@Api(tags = "班级信息api")
 @RequestMapping("/classInfo")
 @RestController
 @CrossOrigin
@@ -23,8 +23,13 @@ public class ClassInformationController {
 
     @ApiOperation(value = "获取所有未上交班级")
     @RequestMapping(value = "/UnloadClass", method = RequestMethod.GET)
-    public List<ClassInformation> checkUnloadSituation(Integer FiledId){
-        return classInformationService.checkUnloadSituation(FiledId);
+    public List<ClassInformation> UnloadSituation(String FiledName){
+        return classInformationService.UnloadSituation(FiledName);
     }
 
+    @ApiOperation(value = "获取所有已上交班级")
+    @RequestMapping(value = "/UploadedClass", method = RequestMethod.GET)
+    public List<ClassInformation> UploadedSituation(String FiledName){
+        return classInformationService.UploadedSituation(FiledName);
+    }
 }

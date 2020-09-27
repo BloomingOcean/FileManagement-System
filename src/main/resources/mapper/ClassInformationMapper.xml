@@ -8,13 +8,31 @@
         <result column="class_sequence" property="classSequence" />
     </resultMap>
 
-    <select id="checkUnloadSituation" parameterType="int" resultMap="ClassMap">
+    <select id="UnloadSituation" parameterType="string" resultMap="ClassMap">
         SELECT c.class_id,m.major_name,c.class_sequence
         FROM class c,major m
         WHERE c.class_major_id = m.major_id
         AND c.class_id NOT IN
         (SELECT s.class_id
-        FROM submission_situation s
-        WHERE s.file_id = #{file_id})
+        FROM submission_situation s,required_files f
+        WHERE s.file_id = f.file_id
+        AND f.file_name = #{file_name})
+    </select>
+
+    <select id="UploadedSituation" parameterType="string" resultMap="ClassMap">
+        SELECT c.class_id,m.major_name,c.class_sequence
+        FROM class c,major m
+        WHERE c.class_major_id = m.major_id
+        AND c.class_id IN
+        (SELECT s.class_id
+        FROM submission_situation s,required_files f
+        WHERE s.file_id = f.file_id
+        AND f.file_name = #{file_name})
+    </select>
+
+    <select id="getNewPeriodName" resultType="string">
+        SELECT file_name FROM required_files
+        WHERE file_id in
+        (SELECT MAX(file_id) FROM required_files)
     </select>
 </mapper>
