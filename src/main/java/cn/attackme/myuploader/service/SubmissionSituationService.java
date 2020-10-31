@@ -2,10 +2,8 @@ package cn.attackme.myuploader.service;
 
 import cn.attackme.myuploader.config.UploadConfig;
 import cn.attackme.myuploader.dao.SubmissionSituationDao;
-import cn.attackme.myuploader.model.ClassInformation;
 import cn.attackme.myuploader.model.SubmissionSituation;
 import cn.attackme.myuploader.utils.FileUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

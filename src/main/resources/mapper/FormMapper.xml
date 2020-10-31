@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.attackme.myuploader.dao.FormDao">
+    <resultMap id="ClassMap" type="cn.attackme.myuploader.model.Form">
+        <result column="user_id" property="userId" />
+        <result column="name" property="name" />
+        <result column="name" property="pass" />
+        <result column="id_number" property="idNumber" />
+        <result column="gender" property="gender" />
+        <result column="address" property="address" />
+        <result column="hobby" property="hobby" />
+        <result column="education" property="education" />
+    </resultMap>
+
+</mapper>

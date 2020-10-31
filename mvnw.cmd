@@ -52,7 +52,7 @@ if exist "%HOME%\mavenrc_pre.cmd" call "%HOME%\mavenrc_pre.cmd"
 
 set ERROR_CODE=0
 
-@REM To isolate internal variables from possible post scripts, we use another setlocal
+@REM To isolate internal variables form possible post scripts, we use another setlocal
 @setlocal
 
 @REM ==== START VALIDATION ====

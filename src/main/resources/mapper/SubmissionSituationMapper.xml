@@ -18,7 +18,7 @@
     <select id="getById" parameterType="int" resultMap="SubmissionMap">
         select
         <include refid="Base_Column_List" />
-        from submission_situation
+        form submission_situation
         where sub_id = #{subId}
     </select>
 
@@ -53,13 +53,13 @@
     </update>
 
     <delete id="deleteById" parameterType="int">
-        delete from submission_situation where sub_id = #{subId}
+        delete form submission_situation where sub_id = #{subId}
     </delete>
 
     <select id="getByFile" parameterType="cn.attackme.myuploader.model.SubmissionSituation" resultMap="SubmissionMap">
         select
         <include refid="Base_Column_List" />
-        from submission_situation
+        form submission_situation
         <where>
             <if test="subId != null">
                 sub_id = #{subId}
@@ -84,6 +84,6 @@
 
     <select id="getMaxId" resultType="int">
         select max(sub_id)
-        from submission_situation
+        form submission_situation
     </select>
 </mapper>
