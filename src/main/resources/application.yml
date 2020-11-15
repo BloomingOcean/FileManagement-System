@@ -7,9 +7,12 @@ spring:
 #    username: user
 #    password: hbkhEwY4LPipeE5j
 #    url: jdbc:mysql://ly-cx.top/all_data?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
-    username: root
-    password: root
-    url: jdbc:mysql://localhost/file_upload?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
+#    username: root
+#    password: root
+#    url: jdbc:mysql://localhost/file_upload?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
+    username: all_data
+    password: SA35eHe8ecZGGypt
+    url: jdbc:mysql://www.ly-cx.top/all_data?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
   servlet:
     multipart:
